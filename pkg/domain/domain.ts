@@ -61,6 +61,7 @@ export class Domain {
   async getStonk(ticker: string): Promise<recommendation | undefined> {
     //find out what date it is here
 
+    
     //Get stock data
     const data = await this.c.getStockData("", ticker);
 

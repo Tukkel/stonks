@@ -8,6 +8,7 @@ interface domain {
   getStonk(ticker: string): Promise<recommendation | undefined>;
   getGainers(): Promise<scraperStock[]>;
   getLoosers(): Promise<scraperStock[]>;
+  getTest(): Promise<scraperStock[]>;
   compare(): Promise<void>;
 }
 
@@ -44,6 +45,10 @@ export class Server2 {
     this.app.post("/getStonk", (req, res) => {
       this.getStonk(req, res);
     });
+
+    this.app.post("/test", (req, res) => {
+      this.test(req, res);
+    })
   }
 
   //entry point for the getStonk REST method
@@ -84,5 +89,21 @@ export class Server2 {
         res.send(stock);
       }
     });
+  }
+
+  //entry point for the getTest REST method
+  private async test(req: express.Request, res: express.Response) {
+    console.log("Test called");
+
+    try {
+      this.d.getTest().then((stock: scraperStock[]) => {
+        if (stock) {
+          res.send(stock);
+        }
+      });
+    } catch (err) {
+      console.error(err);
+      res.send(err);
+    }
   }
 }
